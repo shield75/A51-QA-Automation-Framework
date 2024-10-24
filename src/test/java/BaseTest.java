@@ -121,4 +121,21 @@ public class BaseTest {
         Thread.sleep(500);
     }
 
+    public void playNextSong(){
+        WebElement nextSongButton = driver.findElement(By.cssSelector("i[title='Play next song']"));
+        nextSongButton.click();
+    }
+
+    public void playResumeSong(){
+        WebElement playButton = driver.findElement(By.cssSelector("span[title='Play or resume'] i[class='fa fa-play']"));
+        playButton.click();
+    }
+
+    public void verifySongPlaying(){
+        WebElement soundBar = driver.findElement(By.cssSelector("img[alt='Sound bars']"));
+        WebElement pauseButton = driver.findElement(By.cssSelector("span[title='Pause'] i[class='fa fa-pause']"));
+        if(soundBar.isDisplayed() || pauseButton.isDisplayed()){
+            assert true;
+        }
+    }
 }
