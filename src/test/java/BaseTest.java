@@ -120,6 +120,19 @@ public class BaseTest {
         saveButton.click();
         Thread.sleep(500);
     }
+    public void deletePlaylist() throws InterruptedException{
+        WebElement firstPlaylist = driver.findElement(By.cssSelector("section#playlists > ul > li:nth-of-type(3) > a"));
+        String playlistName = firstPlaylist.getText();
+        firstPlaylist.click();
+        Thread.sleep(3000);
+        WebElement deletePlaylistButton = driver.findElement(By.cssSelector("button[title='Delete this playlist']"));
+        deletePlaylistButton.click();
+        Thread.sleep(3000);
+        WebElement alert = driver.findElement(By.xpath("/html/body/div[2]"));
+        String alertText = alert.getText();
+        String finalAlertText = "Deleted playlist " + '"'+ playlistName + '.'+ '"';
+        Assert.assertEquals(alertText, finalAlertText);
+    }
 
     public void playNextSong(){
         WebElement nextSongButton = driver.findElement(By.cssSelector("i[title='Play next song']"));
