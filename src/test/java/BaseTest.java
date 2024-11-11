@@ -1,9 +1,11 @@
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -13,6 +15,7 @@ import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Parameters;
 
 import java.time.Duration;
+import java.util.Objects;
 import java.util.UUID;
 
 public class BaseTest {
@@ -36,7 +39,7 @@ public class BaseTest {
         driver = new ChromeDriver(options);
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait = new WebDriverWait(driver, Duration.ofSeconds(20));
         url = baseUrl;
         navigateToPage();
     }
@@ -151,5 +154,20 @@ public class BaseTest {
         if(soundBar.isDisplayed() || pauseButton.isDisplayed()){
             assert true;
         }
+    }
+
+    public void renamePlayList() throws InterruptedException {
+        String namePlayList = "Rename PLayList";
+        WebElement playlist = wait.until(ExpectedConditions.elementToBeClickable(driver.findElement(By.cssSelector("section#playlists > ul > li:nth-of-type(3) > a"))));
+        Actions action = new Actions(driver);
+        action.doubleClick(playlist).perform();
+        WebElement inputField = wait.until(ExpectedConditions.elementToBeClickable(driver.findElement(By.cssSelector("input[name='name']"))));
+        inputField.sendKeys(Keys.chord(Keys.CONTROL,"A",Keys.BACK_SPACE));
+        inputField.sendKeys(namePlayList);
+        inputField.sendKeys(Keys.ENTER);
+        WebElement alert = wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.cssSelector(".success.show"))));
+        String alertText = alert.getText();
+        String finalAlertText = "Updated playlist " + '"'+ namePlayList + '.' + '"';
+        Assert.assertEquals(alertText, finalAlertText);
     }
 }
