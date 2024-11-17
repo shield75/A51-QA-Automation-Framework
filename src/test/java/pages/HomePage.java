@@ -2,62 +2,82 @@ package pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 
 public class HomePage extends BasePage{
     public HomePage(WebDriver givenDriver) {
         super(givenDriver);
     }
 
-    By searchField = By.cssSelector("input[type='search']");
-    By songInSearchResult = By.cssSelector("section[class='songs'] article[draggable='true']");
-    By viewAllSongBtn = By.cssSelector("button[data-test='view-all-songs-btn']");
+
+
+    @FindBy(css = "input[type='search']")
+    WebElement searchField;
+    @FindBy(css = "section[class='songs'] article[draggable='true']")
+    WebElement songInSearchResult;
+    @FindBy(css = "button[data-test='view-all-songs-btn']")
+    WebElement viewAllSongBtn;
+
     By songList = By.xpath("(//table[@class='items'])[2]//tr");
-    By firstSong = By.xpath("//div[@class='song-list-wrap main-scroll-wrap search-results']//table[@class='items']/tr[1]");
-    By addToBtn = By.cssSelector("button[title='Add selected songs to…']");
-    By popUpText = By.cssSelector(".success.show");
-    By nextSongBtn = By.cssSelector("i[title='Play next song']");
-    By playBtn = By.cssSelector("span[title='Play or resume'] i[class='fa fa-play']");
-    By soundBar = By.cssSelector("img[alt='Sound bars']");
-    By pauseBtn = By.cssSelector("span[title='Pause'] i[class='fa fa-pause']");
+    @FindBy(xpath = "//div[@class='song-list-wrap main-scroll-wrap search-results']//table[@class='items']/tr[1]")
+    WebElement firstSong;
+    @FindBy(css = "button[title='Add selected songs to…']")
+    WebElement addToBtn;
+    @FindBy(css = ".success.show")
+    WebElement popUpText;
+    @FindBy(css = "i[title='Play next song']")
+    WebElement nextSongBtn;
+    @FindBy(css = "span[title='Play or resume'] i[class='fa fa-play']")
+    WebElement playBtn;
+    @FindBy(css = "img[alt='Sound bars']")
+    WebElement soundBar;
+    @FindBy(css = "span[title='Pause'] i[class='fa fa-pause']")
+    WebElement pauseBtn;
 
-    public By findSpecificPlayList(String playListName) {
-        return By.xpath("//section[@id='songResultsWrapper']//ul/li[contains(text(), '" + playListName + "')]");
+    public WebElement findSpecificPlayList(String playListName) {
+        return driver.findElement(By.xpath("//section[@id='songResultsWrapper']//ul/li[contains(text(), '" + playListName + "')]"));
     }
 
-    public void searchSong(String songName) {
-        findElement(searchField).click();
-        findElement(searchField).sendKeys(songName);
+    public HomePage searchSong(String songName) {
+        searchField.click();
+        searchField.sendKeys(songName);
         findElement(songInSearchResult);
+        return this;
     }
 
-    public void viewAllSong() {
-        findElement(viewAllSongBtn).click();
+    public HomePage viewAllSong() {
+        viewAllSongBtn.click();
         numberOfElementsToBeMoreThan(songList, 0);
+        return this;
     }
 
-    public void clickOnFirstSong() {
-        findElement(firstSong).click();
+    public HomePage clickOnFirstSong() {
+        firstSong.click();
+        return this;
     }
 
-    public void addToPlaylistButton(String playlistName) throws InterruptedException {
-        findElement(addToBtn).click();
+    public HomePage addToPlaylistButton(String playlistName) throws InterruptedException {
+        addToBtn.click();
         findElement(findSpecificPlayList(playlistName)).click();
+        return this;
     }
 
     public String getSuccessPopUpText() {
-        return findElement(popUpText).getText();
+        return popUpText.getText();
+
     }
 
     public void playNextSong(){
-        driver.findElement(nextSongBtn).click();
+        nextSongBtn.click();
     }
 
     public void playResumeSong(){
-        findElement(playBtn).click();
+        playBtn.click();
     }
 
     public void verifySongPlaying(){
-        if(findElement(soundBar).isDisplayed() || findElement(pauseBtn).isDisplayed()){
+        if(soundBar.isDisplayed() || pauseBtn.isDisplayed()){
             assert true;
         }
     }
