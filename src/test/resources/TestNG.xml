@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
-<suite name="TestNG">
-
-    <test name="Example Test" preserve-order="false">
-        <parameter name="baseUrl" value="https://qa.koel.app/"/>
+<suite name="TestNG" parallel="classes" thread-count="1">
+    <test name="Example Test" preserve-order="true">
+        <parameter name="BaseURL" value="https://qa.koel.app/"/>
         <classes>
-            <class name="LoginTests"/>
-            <class name="BaseTest"/>
             <class name="Homework16"/>
             <class name="Homework17"/>
             <class name="Homework18"/>
@@ -17,3 +14,4 @@
         </classes>
     </test>
 </suite>
+

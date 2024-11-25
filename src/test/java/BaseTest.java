@@ -21,7 +21,9 @@ import org.testng.annotations.Parameters;
 
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URL;
 import java.time.Duration;
+import java.util.HashMap;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -30,34 +32,34 @@ public class BaseTest {
     public static WebDriver driver = null;
     public String url = null;
     public WebDriverWait wait = null;
+    private static final ThreadLocal<WebDriver> threadDriver = new ThreadLocal<>();
 
-    @BeforeSuite
-    static void setupClass() {
-        WebDriverManager.chromedriver().setup();
-    }
 
     @BeforeMethod
-    @Parameters({"baseUrl"})
-    public void launchBrowser(String baseUrl) throws MalformedURLException {
-        //Added ChromeOptions argument below to fix websocket error
-/*        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--remote-allow-origins=*");
-        driver = new ChromeDriver(options);*/
-        driver = pickBrowser(System.getProperty("browser"));
-        driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-        wait = new WebDriverWait(driver, Duration.ofSeconds(20));
-        url = baseUrl;
+    @Parameters({"BaseURL"})
+    public void setUpBrowser(String BaseURL) throws MalformedURLException {
+        threadDriver.set(pickBrowser(System.getProperty("browser")));
+        getDriver().manage().window().maximize();
+        getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        driver = getDriver();
+        wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
+        url = BaseURL;
         navigateToPage();
     }
 
+    public static WebDriver getDriver() {
+        return threadDriver.get();
+    }
+    // This getDriver() method returns the current instance of WebDriver associated with the current thread.
+
     @AfterMethod
-    public void closeBrowser() {
-        driver.quit();
+    public void tearDown() {
+        threadDriver.get().close();
+        threadDriver.remove();
     }
 
     public void navigateToPage() {
-        driver.get(url);
+        getDriver().get(url);
     }
 
     public void provideEmail(String email) {
@@ -146,12 +148,12 @@ public class BaseTest {
     }
 
     public void playNextSong(){
-        WebElement nextSongButton = driver.findElement(By.cssSelector("i[title='Play next song']"));
+        WebElement nextSongButton = getDriver().findElement(By.cssSelector("i[title='Play next song']"));
         nextSongButton.click();
     }
 
     public void playResumeSong(){
-        WebElement playButton = driver.findElement(By.cssSelector("span[title='Play or resume'] i[class='fa fa-play']"));
+        WebElement playButton = getDriver().findElement(By.cssSelector("span[title='Play or resume'] i[class='fa fa-play']"));
         playButton.click();
     }
 
@@ -165,47 +167,45 @@ public class BaseTest {
 
     public void renamePlayList() throws InterruptedException {
         String namePlayList = "Rename PLayList";
-        WebElement playlist = wait.until(ExpectedConditions.elementToBeClickable(driver.findElement(By.cssSelector("section#playlists > ul > li:nth-of-type(3) > a"))));
-        Actions action = new Actions(driver);
+        WebElement playlist = wait.until(ExpectedConditions.elementToBeClickable(getDriver().findElement(By.cssSelector("section#playlists > ul > li:nth-of-type(3) > a"))));
+        Actions action = new Actions(getDriver());
         action.doubleClick(playlist).perform();
-        WebElement inputField = wait.until(ExpectedConditions.elementToBeClickable(driver.findElement(By.cssSelector("input[name='name']"))));
+        WebElement inputField = wait.until(ExpectedConditions.elementToBeClickable(getDriver().findElement(By.cssSelector("input[name='name']"))));
         inputField.sendKeys(Keys.chord(Keys.CONTROL,"A",Keys.BACK_SPACE));
         inputField.sendKeys(namePlayList);
         inputField.sendKeys(Keys.ENTER);
-        WebElement alert = wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.cssSelector(".success.show"))));
+        WebElement alert = wait.until(ExpectedConditions.visibilityOf(getDriver().findElement(By.cssSelector(".success.show"))));
         String alertText = alert.getText();
         String finalAlertText = "Updated playlist " + '"'+ namePlayList + '.' + '"';
         Assert.assertEquals(alertText, finalAlertText);
     }
 
-    public static WebDriver pickBrowser(String browser) throws MalformedURLException {
+    public  WebDriver pickBrowser(String browser) throws MalformedURLException {
         DesiredCapabilities caps = new DesiredCapabilities();
         String gridURL = "http://192.168.31.241:4444";//replace with your grid url
 
         //java -jar selenium-server-4.15.0.jar standalone --selenium-manager true
 
-        switch(browser) {
-            case "firefox": // gradle clean test -Dbrowser=firefox
+        switch (browser) {
+            case "firefox":
                 WebDriverManager.firefoxdriver().setup();
                 return driver = new FirefoxDriver();
-
-            case "MicrosoftEdge": // gradle clean test -Dbrowser=MicrosoftEdge
+            case "MicrosoftEdge":
                 WebDriverManager.edgedriver().setup();
                 EdgeOptions edgeOptions = new EdgeOptions();
                 edgeOptions.addArguments("--remote-allow-origins=*");
                 return driver = new EdgeDriver(edgeOptions);
-
-            case "grid-edge": // gradle clean test -Dbrowser=grid-edge
-                caps.setCapability("browserName", "MicrosoftEdge");
-                return driver = new RemoteWebDriver(URI.create(gridURL).toURL(), caps);
-
-            case "grid-firefox": // gradle clean test -Dbrowser=grid-firefox
+            case "grid-firefox":
                 caps.setCapability("browserName", "firefox");
                 return driver = new RemoteWebDriver(URI.create(gridURL).toURL(), caps);
-
-            case "grid-chrome": // gradle clean test -Dbrowser=grid-chrome
+            case "grid-edge":
+                caps.setCapability("browserName", "MicrosoftEdge");
+                return driver = new RemoteWebDriver(URI.create(gridURL).toURL(), caps);
+            case "grid-chrome":
                 caps.setCapability("browserName", "chrome");
                 return driver = new RemoteWebDriver(URI.create(gridURL).toURL(), caps);
+            case "cloud":
+                return lambdaTest();
             default:
                 WebDriverManager.chromedriver().setup();
                 ChromeOptions chromeOptions = new ChromeOptions();
@@ -213,4 +213,45 @@ public class BaseTest {
                 return driver = new ChromeDriver(chromeOptions);
         }
     }
+
+
+    public WebDriver lambdaTest() throws MalformedURLException {
+
+/*      Test Pro Instructor LambdaTest account
+
+        1.) Navigate to https://accounts.lambdatest.com/login
+
+        2.) Login using Google email
+
+        Email: lambdatest.testpro@gmail.com
+        Password: testpro123
+
+        3.) Run command in IntelliJ Terminal:
+         gradle clean test -Dbrowser=cloud
+
+        4.) View the cloud automations in
+        https://accounts.lambdatest.com/dashboard
+
+
+       Configured for the Test Pro lambdatest account
+  */
+        String hubURL = "https://hub.lambdatest.com/wd/hub";
+
+        DesiredCapabilities capabilities = new DesiredCapabilities();
+        capabilities.setCapability("browserName", "chrome");
+        capabilities.setCapability("browserVersion", "129");
+        HashMap<String, Object> ltOptions = new HashMap<String, Object>();
+        ltOptions.put("username", "rumenul94");
+        ltOptions.put("accessKey", "0TbAPSFH6Ha2TeQVajfLSzi8gQppSGT5s3ONn66ishV2Vn3koG");
+        ltOptions.put("resolution", "1920x1080");
+        ltOptions.put("build", "Selenium 4");
+        ltOptions.put("name", this.getClass().getName());
+        ltOptions.put("platformName", "Windows 10");
+        ltOptions.put("seCdp", true);
+        ltOptions.put("selenium_version", "4.0.0");
+        capabilities.setCapability("LT:Options", ltOptions);
+
+        return new RemoteWebDriver(new URL(hubURL), capabilities);
+    }
+    // This lambdaTest() method returns an instance of WebDriver for remote testing using the LambdaTest service.
 }
