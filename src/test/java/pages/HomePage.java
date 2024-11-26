@@ -4,12 +4,14 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class HomePage extends BasePage{
     public HomePage(WebDriver givenDriver) {
         super(givenDriver);
     }
 
+    public By sideControls = By.xpath("//div[@class='side player-controls']");
     By searchField = By.cssSelector("input[type='search']");
     By songInSearchResult = By.cssSelector("section[class='songs'] article[draggable='true']");
     By viewAllSongBtn = By.cssSelector("button[data-test='view-all-songs-btn']");
@@ -17,7 +19,7 @@ public class HomePage extends BasePage{
     By firstSong = By.xpath("//div[@class='song-list-wrap main-scroll-wrap search-results']//table[@class='items']/tr[1]");
     By addToBtn = By.cssSelector("button[title='Add selected songs to…']");
     By popUpText = By.cssSelector(".success.show");
-    By nextSongBtn = By.cssSelector("i[title='Play next song']");
+    public By nextSongBtn = By.xpath("/html/body/div/div/footer/div[1]/i[2]");
     By playBtn = By.cssSelector("span[title='Play or resume'] i[class='fa fa-play']");
     By soundBar = By.cssSelector("img[alt='Sound bars']");
     By pauseBtn = By.cssSelector("span[title='Pause'] i[class='fa fa-pause']");
@@ -56,7 +58,7 @@ public class HomePage extends BasePage{
     }
 
     public void playNextSong(){
-        findElement(nextSongBtn).click();
+        wait.until(ExpectedConditions.elementToBeClickable(nextSongBtn)).click();
     }
 
     public void playResumeSong(){
@@ -68,5 +70,6 @@ public class HomePage extends BasePage{
             assert true;
         }
     }
+
 
 }

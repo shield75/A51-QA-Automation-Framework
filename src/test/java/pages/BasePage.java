@@ -31,4 +31,9 @@ public class BasePage {
     public List<WebElement> numberOfElementsToBeMoreThan(By locator, int num) {
         return wait.until(ExpectedConditions.numberOfElementsToBeMoreThan(locator, num));
     }
+
+
+    public void hoverOnElement(By element){
+        actions.moveToElement(driver.findElement(element)).perform();
+    }
 }
