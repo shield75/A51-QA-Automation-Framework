@@ -16,7 +16,7 @@ public class Homework17 extends BaseTest {
         LoginPage loginPage = new LoginPage(getDriver());
         HomePage homePage = new HomePage(getDriver());
         loginPage.login();
-
+        Thread.sleep(2000);
         homePage.searchSong("love");
         homePage.viewAllSong();
         //First song click
