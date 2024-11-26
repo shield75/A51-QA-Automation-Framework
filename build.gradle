@@ -20,5 +20,6 @@ test {
         //suites "src/test/resources/Smoke.xml"
         //suites "src/test/resources/TestNG config.xml"
         suites "src/test/resources/TestNG.xml"
+        systemProperty "browser", System.getProperty("browser")
     }
 }
