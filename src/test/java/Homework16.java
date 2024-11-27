@@ -11,13 +11,13 @@ public class Homework16 extends BaseTest {
 
     @Test
     public void registrationNavigation() {
-        LoginPage loginPage = new LoginPage(driver);
+        LoginPage loginPage = new LoginPage(getDriver());
 
         loginPage.clickOnRegistrationLink();
 
         String registrationUrl = "https://qa.koel.app/registration";
         wait.until(ExpectedConditions.urlToBe(registrationUrl));
-        Assert.assertEquals(driver.getCurrentUrl(), registrationUrl, "URL does not match");
+        Assert.assertEquals(getDriver().getCurrentUrl(), registrationUrl, "URL does not match");
 
     }
 }
