@@ -9,6 +9,7 @@ public class Homework18 extends BaseTest {
     public void playSong() throws InterruptedException {
         LoginPage loginPage = new LoginPage(getDriver());
         HomePage homePage = new HomePage(getDriver());
+      
         loginPage.login();
         homePage.hoverOnElement(homePage.sideControls);
         homePage.playNextSong();
