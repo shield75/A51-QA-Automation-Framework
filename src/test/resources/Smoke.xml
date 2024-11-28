@@ -4,6 +4,7 @@
 <suite name="Smoke testing">
 
     <test name="Play Song" preserve-order="false">
+        <parameter name="BaseURL" value="https://qa.koel.app/"/>
         <classes>
             <class name="Homework18">
                     <methods>
