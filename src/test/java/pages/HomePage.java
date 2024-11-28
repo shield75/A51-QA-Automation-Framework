@@ -1,7 +1,6 @@
 package pages;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -37,12 +36,8 @@ public class HomePage extends BasePage{
     }
 
     public HomePage viewAllSong() {
-/*        hoverOnElement(viewAllSongBtn);
         findElement(viewAllSongBtn).click();
-        numberOfElementsToBeMoreThan(songList, 0);*/
-        WebElement button = driver.findElement(By.cssSelector("button[data-test='view-all-songs-btn']"));
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", button);
-        button.click();
+        numberOfElementsToBeMoreThan(songList, 0);
         return this;
     }
 
