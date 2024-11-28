@@ -32,8 +32,6 @@ public class HomePage extends BasePage{
     }
 
     public HomePage searchSong(String songName) throws IOException {
-        File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-        Files.copy(screenshot.toPath(), Paths.get("screenshot2.png"));
         findElement((searchField)).click();
         findElement(searchField).sendKeys(songName);
         findElement(songInSearchResult);
@@ -41,8 +39,6 @@ public class HomePage extends BasePage{
     }
 
     public HomePage viewAllSong() throws IOException {
-        File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-        Files.copy(screenshot.toPath(), Paths.get("screenshot.png"));
         WebElement button = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[data-test='view-all-songs-btn']")));
         button.click();
         numberOfElementsToBeMoreThan(songList, 0);
