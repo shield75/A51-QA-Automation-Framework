@@ -31,7 +31,9 @@ public class HomePage extends BasePage{
         return (By.xpath("//section[@id='songResultsWrapper']//ul/li[contains(text(), '" + playListName + "')]"));
     }
 
-    public HomePage searchSong(String songName) {
+    public HomePage searchSong(String songName) throws IOException {
+        File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+        Files.copy(screenshot.toPath(), Paths.get("screenshot2.png"));
         findElement((searchField)).click();
         findElement(searchField).sendKeys(songName);
         findElement(songInSearchResult);
