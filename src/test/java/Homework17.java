@@ -6,11 +6,12 @@ import org.testng.annotations.Test;
 import pages.HomePage;
 import pages.LoginPage;
 
+import java.io.IOException;
 import java.time.Duration;
 
 public class Homework17 extends BaseTest {
     @Test
-    public void addSongToPlaylist() throws InterruptedException {
+    public void addSongToPlaylist() throws InterruptedException, IOException {
         String playlistName = "\"Automation.\"";
 
         LoginPage loginPage = new LoginPage(getDriver());

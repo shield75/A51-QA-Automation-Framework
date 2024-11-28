@@ -1,10 +1,13 @@
 package pages;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class HomePage extends BasePage{
     public HomePage(WebDriver givenDriver) {
@@ -35,8 +38,11 @@ public class HomePage extends BasePage{
         return this;
     }
 
-    public HomePage viewAllSong() {
-        findElement(viewAllSongBtn).click();
+    public HomePage viewAllSong() throws IOException {
+        File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+        Files.copy(screenshot.toPath(), Paths.get("screenshot.png"));
+        WebElement button = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[data-test='view-all-songs-btn']")));
+        button.click();
         numberOfElementsToBeMoreThan(songList, 0);
         return this;
     }
