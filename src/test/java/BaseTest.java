@@ -189,6 +189,7 @@ public class BaseTest {
         switch (browser) {
             case "chrome":
                 ChromeOptions chromeOptions = new ChromeOptions();
+                chromeOptions.addArguments("--start-maximized");
                 chromeOptions.addArguments("--remote-allow-origins=*");
                 return driver = new ChromeDriver(chromeOptions);
             case "firefox":

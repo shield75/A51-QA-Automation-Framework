@@ -36,6 +36,7 @@ public class HomePage extends BasePage{
     }
 
     public HomePage viewAllSong() {
+        hoverOnElement(viewAllSongBtn);
         findElement(viewAllSongBtn).click();
         numberOfElementsToBeMoreThan(songList, 0);
         return this;
