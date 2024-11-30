@@ -23,10 +23,9 @@ public class BasePage {
         PageFactory.initElements(driver,this);
     }
 
-    public WebElement findElement(By locator) {
-        return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+    public WebElement findElement(WebElement locator) {
+        return wait.until(ExpectedConditions.visibilityOf(locator));
     }
-
 
     public List<WebElement> numberOfElementsToBeMoreThan(By locator, int num) {
         return wait.until(ExpectedConditions.numberOfElementsToBeMoreThan(locator, num));
