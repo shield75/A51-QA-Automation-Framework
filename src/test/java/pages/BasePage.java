@@ -9,6 +9,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.List;
 
 public class BasePage {
     WebDriver driver;
@@ -22,12 +23,17 @@ public class BasePage {
         PageFactory.initElements(driver,this);
     }
 
-    public WebElement findElement(WebElement locator) {
-        return wait.until(ExpectedConditions.visibilityOf(locator));
+    public WebElement findElement(By locator) {
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
     }
 
 
-    public void numberOfElementsToBeMoreThan(By locator, int num) {
-        wait.until(ExpectedConditions.numberOfElementsToBeMoreThan(locator, num));
+    public List<WebElement> numberOfElementsToBeMoreThan(By locator, int num) {
+        return wait.until(ExpectedConditions.numberOfElementsToBeMoreThan(locator, num));
+    }
+
+
+    public void hoverOnElement(By element){
+        actions.moveToElement(driver.findElement(element)).perform();
     }
 }

@@ -1,8 +1,5 @@
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
@@ -39,7 +36,7 @@ public class BaseTest {
     @Parameters({"BaseURL"})
     public void setUpBrowser(String BaseURL) throws MalformedURLException {
         threadDriver.set(pickBrowser(System.getProperty("browser")));
-        getDriver().manage().window().maximize();
+        getDriver().manage().window().setSize(new Dimension(1920, 1080));
         getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         driver = getDriver();
         wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
@@ -187,6 +184,11 @@ public class BaseTest {
         //java -jar selenium-server-4.15.0.jar standalone --selenium-manager true
 
         switch (browser) {
+            case "chrome":
+                ChromeOptions chromeOptions = new ChromeOptions();
+                chromeOptions.addArguments("--start-maximized");
+                chromeOptions.addArguments("--remote-allow-origins=*");
+                return driver = new ChromeDriver(chromeOptions);
             case "firefox":
                 WebDriverManager.firefoxdriver().setup();
                 return driver = new FirefoxDriver();
@@ -208,7 +210,7 @@ public class BaseTest {
                 return lambdaTest();
             default:
                 WebDriverManager.chromedriver().setup();
-                ChromeOptions chromeOptions = new ChromeOptions();
+                chromeOptions = new ChromeOptions();
                 chromeOptions.addArguments("--remote-allow-origins=*");
                 return driver = new ChromeDriver(chromeOptions);
         }
