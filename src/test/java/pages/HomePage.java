@@ -3,6 +3,7 @@ package pages;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.testng.Assert;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,22 +15,36 @@ public class HomePage extends BasePage{
         super(givenDriver);
     }
 
-    public By sideControls = By.xpath("//div[@class='side player-controls']");
-    By searchField = By.cssSelector("input[type='search']");
-    By songInSearchResult = By.cssSelector("section[class='songs'] article[draggable='true']");
-    By viewAllSongBtn = By.cssSelector("button[data-test='view-all-songs-btn']");
-    By songList = By.xpath("(//table[@class='items'])[2]//tr");
-    By firstSong = By.xpath("//div[@class='song-list-wrap main-scroll-wrap search-results']//table[@class='items']/tr[1]");
-    By addToBtn = By.cssSelector("button[title='Add selected songs to…']");
-    By popUpText = By.cssSelector(".success.show");
-    public By nextSongBtn = By.xpath("/html/body/div/div/footer/div[1]/i[2]");
-    By playBtn = By.cssSelector("span[title='Play or resume'] i[class='fa fa-play']");
-    By soundBar = By.cssSelector("img[alt='Sound bars']");
-    By pauseBtn = By.cssSelector("span[title='Pause'] i[class='fa fa-pause']");
+    @FindBy(css = "input[type='search']")
+    WebElement searchField;
+    @FindBy(css = "section[class='songs'] article[draggable='true']")
+    WebElement songInSearchResult;
+    @FindBy(css = "button[data-test='view-all-songs-btn']")
+    WebElement viewAllSongBtn;
 
-    public By findSpecificPlayList(String playListName) {
-        return (By.xpath("//section[@id='songResultsWrapper']//ul/li[contains(text(), '" + playListName + "')]"));
+    By songList = By.xpath("(//table[@class='items'])[2]//tr");
+    @FindBy(xpath = "//div[@class='song-list-wrap main-scroll-wrap search-results']//table[@class='items']/tr[1]")
+    WebElement firstSong;
+    @FindBy(css = "button[title='Add selected songs to…']")
+    WebElement addToBtn;
+    @FindBy(css = ".success.show")
+    WebElement popUpText;
+    @FindBy(css = "i[title='Play next song']")
+    WebElement nextSongBtn;
+    @FindBy(css = "span[title='Play or resume'] i[class='fa fa-play']")
+    WebElement playBtn;
+    @FindBy(css = "img[alt='Sound bars']")
+    WebElement soundBar;
+    @FindBy(css = "span[title='Pause'] i[class='fa fa-pause']")
+    WebElement pauseBtn;
+    @FindBy(css = "img.avatar")
+    WebElement avatar;
+
+    public WebElement findSpecificPlayList(String playListName) {
+        return (driver.findElement(By.xpath("//section[@id='songResultsWrapper']//ul/li[contains(text(), '" + playListName + "')]")));
     }
+
+    public By sideControls = By.xpath("//div[@class='side player-controls']");
 
     public HomePage searchSong(String songName) throws IOException {
         findElement((searchField)).click();
@@ -75,5 +90,12 @@ public class HomePage extends BasePage{
         }
     }
 
+    public void checkAvatar() {
+//        WebElement avatarIcon = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("img.avatar")));
+//        avatarIcon.click();
+        Assert.assertTrue(findElement(avatar).isDisplayed(), "Avatar not found");
+        //Assert.assertTrue(wait.until(ExpectedConditions.visibilityOfElementLocated(avatar)).isDisplayed());
+
+    }
 
 }
