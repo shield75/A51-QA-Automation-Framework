@@ -1,16 +1,14 @@
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
+package testCases;
+
+
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import pages.LoginPage;
 
-public class Homework16 extends BaseTest {
-
+public class RegistrationNavigationTest extends BaseTest {
     @Test
-    public void registrationNavigation() {
+    public void registrationNavigationTest() {
         LoginPage loginPage = new LoginPage(getDriver());
 
         loginPage.clickOnRegistrationLink();

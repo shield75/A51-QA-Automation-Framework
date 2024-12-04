@@ -5,12 +5,11 @@
     <test name="Example Test" preserve-order="true">
         <parameter name="BaseURL" value="https://qa.koel.app/"/>
         <classes>
-            <class name="Homework16"/>
-            <class name="Homework17"/>
-            <class name="Homework18"/>
-            <class name="Homework19"/>
-            <class name="Homework20"/>
-            <class name="Homework21"/>
+            <class name="testCases.RegistrationNavigationTest"/>
+            <class name="testCases.AddSongToPlaylistTest"/>
+            <class name="testCases.PlaySongTest"/>
+            <class name="testCases.DeletePlaylistTest"/>
+            <class name="testCases.RenameAPlayListTest"/>
             <class name="CucumberRunner"/>
         </classes>
     </test>
