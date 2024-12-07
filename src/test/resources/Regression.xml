@@ -6,10 +6,11 @@
         <parameter name="BaseURL" value="https://qa.koel.app/"/>
         <classes>
             <class name="testCases.RegistrationNavigationTest"/>
+            <class name="testCases.CreatePlayListTest"/>
             <class name="testCases.AddSongToPlaylistTest"/>
             <class name="testCases.PlaySongTest"/>
-            <class name="testCases.DeletePlaylistTest"/>
             <class name="testCases.RenameAPlayListTest"/>
+            <class name="testCases.DeletePlaylistTest"/>
             <class name="CucumberRunner"/>
         </classes>
     </test>

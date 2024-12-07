@@ -9,9 +9,7 @@ public class RenameAPlayListTest extends BaseTest{
     public void renameAPlayList() throws InterruptedException {
         LoginPage loginPage  = new LoginPage(driver);
         PlayListPage playListPage = new PlayListPage(driver);
-        loginPage.provideEmail("rumenul.rimon@testpro.io");
-        loginPage.providePassword("27041575");
-        loginPage.clickSubmit();
+        loginPage.login();
         playListPage.renamePlayList();
     }
 }
