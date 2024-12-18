@@ -21,12 +21,8 @@ dependencies {
 
 test {
     useTestNG() {
-        //suites "src/test/resources/Smoke.xml"
-        //suites "src/test/resources/TestNG config.xml"
-        //suites "src/test/resources/${suite}.xml"
-        suites "src/test/resources/Cucumber.xml"
-        systemProperty 'fullscreen', 'true'
-        //suites "src/test/resources/Regression.xml"
+
+       suites "src/test/resources/Cucumber.xml"
         systemProperty "browser", System.getProperty("browser")
     }
 }

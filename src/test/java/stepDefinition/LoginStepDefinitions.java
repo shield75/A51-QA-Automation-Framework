@@ -35,7 +35,6 @@ public class LoginStepDefinitions {
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         loginPage = new LoginPage(driver);
         homePage = new HomePage(driver);
-
     }
 
     @After
